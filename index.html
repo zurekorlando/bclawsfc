@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Architect - Juego de Arquitectura</title>
+    
+    <!-- FUENTES -->
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <!-- ESTILOS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- CONTAINER PRINCIPAL -->
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <h1>AWS ARCHITECT</h1>
+            <p class="subtitle">Construye la arquitectura correcta</p>
+        </header>
+
+        <!-- CURRENT PLAYER DISPLAY -->
+        <div class="current-player-display" id="current-player-display">
+            <span class="player-icon">👤</span>
+            <span class="player-text">Jugador: <span id="current-player-name">-</span></span>
+        </div>
+
+        <!-- GAME INFO BAR -->
+        <div class="game-info">
+            <div class="score-board">
+                <div class="score-item">
+                    Correctas: <span id="correct-count">0</span>
+                </div>
+                <div class="score-item">
+                    Intentos: <span id="attempt-count">0</span>
+                </div>
+                <div class="score-item">
+                    Score: <span id="score">0</span>%
+                </div>
+            </div>
+            <div class="architecture-selector">
+                <select id="architecture-select">
+                    <option value="0">🚀 Serverless Web App</option>
+                    <option value="1">🔧 Microservices Platform</option>
+                    <option value="2">📱 Static Website</option>
+                    <option value="3">📊 Data Pipeline</option>
+                    <option value="4">🏗️ Three-Tier App</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- INSTRUCTIONS -->
+        <div class="instructions">
+            <div class="instruction-item">📦 Arrastra componentes a los slots</div>
+            <div class="instruction-item">✕ Click en un componente para quitarlo</div>
+            <div class="instruction-item">🎯 Verifica tu arquitectura</div>
+        </div>
+
+        <!-- GAME CONTAINER -->
+        <div class="game-container">
+            <!-- COMPONENTS PANEL -->
+            <div class="components-panel">
+                <h2>⚡ Componentes AWS</h2>
+                <div class="components-grid" id="components-grid">
+                    <!-- Los componentes se generarán dinámicamente -->
+                </div>
+            </div>
+
+            <!-- ARCHITECTURE BOARD -->
+            <div class="architecture-board">
+                <h3 class="architecture-title" id="architecture-name">Serverless Web App</h3>
+                
+                <!-- USE CASE BANNER -->
+                <div class="use-case-banner" id="use-case-banner">
+                    <div class="use-case-title">
+                        <span>💼</span>
+                        <span id="use-case-title">Caso de Uso</span>
+                    </div>
+                    <div class="use-case-scenario" id="use-case-scenario"></div>
+                    <div class="use-case-benefits" id="use-case-benefits"></div>
+                </div>
+
+                <!-- SLOTS CONTAINER -->
+                <div class="slots-container" id="slots-container">
+                    <!-- Los slots se generarán dinámicamente -->
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTROL PANEL -->
+        <div class="control-panel">
+            <button class="btn btn-verify" id="verify-btn">🎯 Verificar</button>
+            <div class="status-led" id="status-led"></div>
+            <button class="btn btn-reset" id="reset-btn">🔄 Reset</button>
+        </div>
+    </div>
+
+    <!-- FEEDBACK MESSAGE -->
+    <div class="feedback-message" id="feedback-message"></div>
+
+    <!-- LOGIN MODAL -->
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal-content">
+            <h2>🎮 BIENVENIDO</h2>
+            <p>Ingresa tu nickname para comenzar</p>
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    id="player-nickname" 
+                    placeholder="Tu nickname aquí..." 
+                    maxlength="20"
+                    autocomplete="off"
+                />
+            </div>
+            <button class="btn-start" id="start-game-btn" disabled>
+                🚀 COMENZAR A JUGAR
+            </button>
+        </div>
+    </div>
+
+    <!-- LEADERBOARD TOGGLE -->
+    <button class="leaderboard-toggle" id="leaderboard-toggle" style="display: none;">
+        🏆
+    </button>
+
+    <!-- LEADERBOARD PANEL -->
+    <div class="leaderboard-panel" id="leaderboard-panel">
+        <div class="leaderboard-header">
+            <h2>🏆 RANKING</h2>
+            <button class="close-leaderboard" id="close-leaderboard">✕</button>
+        </div>
+        <div id="leaderboard-content">
+            <!-- Players will be inserted here -->
+        </div>
+    </div>
+
+    <!-- ADMIN TOGGLE -->
+    <button class="admin-toggle" id="admin-toggle" style="display: none;">
+        ⚙️
+    </button>
+
+    <!-- ADMIN PANEL -->
+    <div class="admin-panel" id="admin-panel">
+        <div class="admin-container">
+            <div class="admin-header">
+                <h2>🎯 PANEL DE ADMINISTRACIÓN</h2>
+                <button class="close-admin" id="close-admin">✕</button>
+            </div>
+
+            <!-- ESTADÍSTICAS GENERALES -->
+            <div class="admin-section">
+                <h3>📊 Estadísticas Generales</h3>
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-total-players">0</div>
+                        <div class="stat-label">Jugadores</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-total-attempts">0</div>
+                        <div class="stat-label">Intentos Totales</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-avg-score">0%</div>
+                        <div class="stat-label">Score Promedio</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-completion">0</div>
+                        <div class="stat-label">Arquitecturas Completadas</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CÓDIGO DE SESIÓN -->
+            <div class="admin-section">
+                <h3>🔗 Código de Sesión</h3>
+                <div class="info-box">
+                    📤 Comparte este código con tus compañeros para que puedan enviar sus resultados.
+                    Los jugadores pueden ir al panel de administración y usar "Importar Datos" con este código.
+                </div>
+                <div class="session-code">
+                    <div>ID de Sesión</div>
+                    <div class="session-code-value" id="session-code">LOADING...</div>
+                    <button class="admin-btn admin-btn-export" onclick="copySessionCode()">
+                        📋 Copiar Código
+                    </button>
+                </div>
+            </div>
+
+            <!-- ACCIONES -->
+            <div class="admin-section">
+                <h3>⚡ Acciones</h3>
+                <div class="admin-actions">
+                    <button class="admin-btn admin-btn-export" id="export-json-btn">
+                        💾 Exportar JSON
+                    </button>
+                    <button class="admin-btn admin-btn-export" id="export-csv-btn">
+                        📊 Exportar CSV
+                    </button>
+                    <button class="admin-btn admin-btn-import" id="import-data-btn">
+                        📥 Importar Datos
+                    </button>
+                    <button class="admin-btn admin-btn-clear" id="clear-all-btn">
+                        🗑️ Limpiar Todo
+                    </button>
+                </div>
+
+                <!-- IMPORT AREA -->
+                <div id="import-section" style="display: none; margin-top: 20px;">
+                    <h4 style="color: var(--electric-blue); font-family: 'Orbitron', sans-serif; margin-bottom: 10px;">
+                        Pega aquí el JSON exportado:
+                    </h4>
+                    <textarea class="import-area" id="import-textarea" placeholder='[{"nickname":"Juan","correctCount":3,...}]'></textarea>
+                    <div style="margin-top: 15px; display: flex; gap: 10px;">
+                        <button class="admin-btn admin-btn-export" id="process-import-btn">
+                            ✅ Importar
+                        </button>
+                        <button class="admin-btn admin-btn-clear" id="cancel-import-btn">
+                            ✕ Cancelar
+                        </button>
+                    </div>
+                    <div class="info-box" style="margin-top: 15px;">
+                        💡 <strong>Tip:</strong> Los jugadores pueden exportar sus datos individuales y enviártelos.
+                        Luego puedes importarlos aquí para consolidar todos los resultados.
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLA DE RESULTADOS -->
+            <div class="admin-section">
+                <h3>📋 Todos los Resultados</h3>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nickname</th>
+                                <th>Score</th>
+                                <th>Correctas</th>
+                                <th>Intentos</th>
+                                <th>Arquitecturas Completadas</th>
+                                <th>Última Jugada</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body">
+                            <!-- Rows will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
