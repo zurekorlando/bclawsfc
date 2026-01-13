@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Architect - Juego de Arquitectura (Tiempo Real)</title>
+    
+    <!-- FUENTES -->
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <!-- ESTILOS -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles-firebase.css">
+</head>
+<body>
+    <!-- TIMER GLOBAL -->
+    <div class="timer-display" id="timer-display" style="display: none;">
+        <div class="timer-icon">⏱️</div>
+        <div class="timer-time">
+            <span id="timer-minutes">00</span>:<span id="timer-seconds">00</span>
+        </div>
+        <div class="timer-label">Tiempo Restante</div>
+    </div>
+
+    <!-- CONTAINER PRINCIPAL -->
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <h1>AWS ARCHITECT</h1>
+            <p class="subtitle">Construye la arquitectura correcta</p>
+        </header>
+
+        <!-- CURRENT PLAYER DISPLAY -->
+        <div class="current-player-display" id="current-player-display">
+            <span class="player-icon">👤</span>
+            <span class="player-text">Jugador: <span id="current-player-name">-</span></span>
+        </div>
+
+        <!-- GAME INFO BAR -->
+        <div class="game-info">
+            <div class="score-board">
+                <div class="score-item">
+                    Correctas: <span id="correct-count">0</span>
+                </div>
+                <div class="score-item">
+                    Intentos: <span id="attempt-count">0</span>
+                </div>
+                <div class="score-item">
+                    Score: <span id="score">0</span>%
+                </div>
+            </div>
+            <div class="architecture-selector">
+                <select id="architecture-select">
+                    <option value="0">🚀 Serverless Web App</option>
+                    <option value="1">🔧 Microservices Platform</option>
+                    <option value="2">📱 Static Website</option>
+                    <option value="3">📊 Data Pipeline</option>
+                    <option value="4">🏗️ Three-Tier App</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- INSTRUCTIONS -->
+        <div class="instructions">
+            <div class="instruction-item">📦 Arrastra componentes a los slots</div>
+            <div class="instruction-item">✕ Click en un componente para quitarlo</div>
+            <div class="instruction-item">🎯 Verifica tu arquitectura</div>
+        </div>
+
+        <!-- GAME CONTAINER -->
+        <div class="game-container">
+            <!-- COMPONENTS PANEL -->
+            <div class="components-panel">
+                <h2>⚡ Componentes AWS</h2>
+                <div class="components-grid" id="components-grid">
+                    <!-- Los componentes se generarán dinámicamente -->
+                </div>
+            </div>
+
+            <!-- ARCHITECTURE BOARD -->
+            <div class="architecture-board">
+                <h3 class="architecture-title" id="architecture-name">Serverless Web App</h3>
+                
+                <!-- USE CASE BANNER -->
+                <div class="use-case-banner" id="use-case-banner">
+                    <div class="use-case-title">
+                        <span>💼</span>
+                        <span id="use-case-title">Caso de Uso</span>
+                    </div>
+                    <div class="use-case-scenario" id="use-case-scenario"></div>
+                    <div class="use-case-benefits" id="use-case-benefits"></div>
+                </div>
+
+                <!-- SLOTS CONTAINER -->
+                <div class="slots-container" id="slots-container">
+                    <!-- Los slots se generarán dinámicamente -->
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTROL PANEL -->
+        <div class="control-panel">
+            <button class="btn btn-verify" id="verify-btn">🎯 Verificar</button>
+            <div class="status-led" id="status-led"></div>
+            <button class="btn btn-reset" id="reset-btn">🔄 Reset</button>
+        </div>
+    </div>
+
+    <!-- FEEDBACK MESSAGE -->
+    <div class="feedback-message" id="feedback-message"></div>
+
+    <!-- LOGIN MODAL -->
+    <div class="modal-overlay" id="login-modal">
+        <div class="modal-content">
+            <h2>🎮 BIENVENIDO</h2>
+            <p>Ingresa tu nickname para comenzar</p>
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    id="player-nickname" 
+                    placeholder="Tu nickname aquí..." 
+                    maxlength="20"
+                    autocomplete="off"
+                />
+            </div>
+            <button class="btn-start" id="start-game-btn" disabled>
+                🚀 COMENZAR A JUGAR
+            </button>
+        </div>
+    </div>
+
+    <!-- FIREBASE SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <!-- SCRIPTS -->
+    <script src="config.js"></script>
+    <script src="config-firebase.js"></script>
+    <script src="app-firebase.js"></script>
+</body>
+</html>

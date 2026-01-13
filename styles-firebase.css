@@ -1,0 +1,170 @@
+/**
+ * AWS ARCHITECT - ESTILOS ADICIONALES PARA FIREBASE
+ * ===================================================
+ * Estilos para el timer global y características en tiempo real
+ */
+
+/* ==========================================
+   TIMER GLOBAL
+   ========================================== */
+.timer-display {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, rgba(35, 47, 62, 0.98), rgba(48, 43, 99, 0.98));
+    border: 3px solid var(--electric-blue);
+    border-radius: 20px;
+    padding: 20px 40px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+    backdrop-filter: blur(10px);
+    animation: slideDown 0.5s ease;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateX(-50%) translateY(-100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+.timer-icon {
+    font-size: 2.5rem;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.timer-time {
+    font-family: 'Audiowide', cursive;
+    font-size: 3rem;
+    color: var(--electric-blue);
+    text-shadow: 0 0 20px var(--electric-blue);
+    letter-spacing: 3px;
+}
+
+.timer-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Timer en modo alerta (menos de 5 minutos) */
+.timer-display.alert {
+    border-color: var(--aws-orange);
+    box-shadow: 0 0 30px rgba(255, 153, 0, 0.5);
+}
+
+.timer-display.alert .timer-time {
+    color: var(--aws-orange);
+    text-shadow: 0 0 20px var(--aws-orange);
+}
+
+/* Timer en modo advertencia (menos de 1 minuto) */
+.timer-display.warning {
+    border-color: var(--neon-red);
+    box-shadow: 0 0 30px rgba(255, 0, 64, 0.5);
+    animation: timerBlink 1s ease-in-out infinite;
+}
+
+.timer-display.warning .timer-time {
+    color: var(--neon-red);
+    text-shadow: 0 0 20px var(--neon-red);
+}
+
+@keyframes timerBlink {
+    0%, 100% {
+        transform: translateX(-50%) scale(1);
+    }
+    50% {
+        transform: translateX(-50%) scale(1.05);
+    }
+}
+
+/* ==========================================
+   INDICADOR DE CONEXIÓN
+   ========================================== */
+.connection-status {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(35, 47, 62, 0.95);
+    border: 2px solid var(--electric-blue);
+    border-radius: 10px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+}
+
+.connection-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--neon-green);
+    box-shadow: 0 0 10px var(--neon-green);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.connection-status.disconnected .connection-dot {
+    background: var(--neon-red);
+    box-shadow: 0 0 10px var(--neon-red);
+}
+
+/* ==========================================
+   RESPONSIVE TIMER
+   ========================================== */
+@media (max-width: 768px) {
+    .timer-display {
+        padding: 15px 25px;
+        gap: 10px;
+    }
+
+    .timer-icon {
+        font-size: 2rem;
+    }
+
+    .timer-time {
+        font-size: 2rem;
+    }
+
+    .timer-label {
+        font-size: 0.7rem;
+        display: none;
+    }
+
+    .connection-status {
+        bottom: 10px;
+        left: 10px;
+        padding: 8px 15px;
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .timer-display {
+        padding: 10px 20px;
+        top: 10px;
+    }
+
+    .timer-icon {
+        font-size: 1.5rem;
+    }
+
+    .timer-time {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+    }
+}

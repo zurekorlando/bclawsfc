@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - AWS Architect</title>
+    
+    <!-- FUENTES -->
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --aws-orange: #FF9900;
+            --aws-dark: #232F3E;
+            --neon-green: #00ff41;
+            --neon-red: #ff0040;
+            --electric-blue: #00d4ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .admin-container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-family: 'Audiowide', cursive;
+            font-size: 3rem;
+            color: var(--aws-orange);
+            text-shadow: 0 0 20px var(--aws-orange);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--electric-blue);
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+
+        /* TIMER CONTROLS */
+        .timer-controls {
+            background: rgba(35, 47, 62, 0.9);
+            border: 3px solid var(--electric-blue);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .timer-controls h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--electric-blue);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .timer-setup {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input-group label {
+            font-family: 'Orbitron', sans-serif;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .input-group input {
+            padding: 15px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            background: rgba(35, 47, 62, 0.8);
+            border: 2px solid var(--electric-blue);
+            border-radius: 8px;
+            color: #fff;
+            width: 150px;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--aws-orange);
+            box-shadow: 0 0 15px var(--aws-orange);
+        }
+
+        .btn {
+            font-family: 'Orbitron', sans-serif;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--neon-green), #00cc33);
+            color: var(--aws-dark);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--neon-red), #cc0033);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .timer-status {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 212, 255, 0.1);
+            border-left: 4px solid var(--electric-blue);
+            border-radius: 5px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .timer-status.active {
+            border-left-color: var(--neon-green);
+            background: rgba(0, 255, 65, 0.1);
+        }
+
+        /* STATS CARDS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255, 153, 0, 0.2), rgba(0, 212, 255, 0.2));
+            border: 2px solid var(--aws-orange);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Audiowide', cursive;
+            font-size: 3rem;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--electric-blue);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* PLAYERS TABLE */
+        .players-section {
+            background: rgba(35, 47, 62, 0.9);
+            border: 3px solid var(--aws-orange);
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        .players-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--aws-orange);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .players-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .players-table th {
+            background: linear-gradient(135deg, var(--aws-orange), #ff6600);
+            color: var(--aws-dark);
+            padding: 15px;
+            text-align: left;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .players-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 153, 0, 0.2);
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .players-table tr:hover {
+            background: rgba(255, 153, 0, 0.1);
+        }
+
+        .online-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .online-indicator.online {
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .online-indicator.offline {
+            background: #666;
+        }
+
+        .rank-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-family: 'Audiowide', cursive;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .rank-badge.first {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: var(--aws-dark);
+        }
+
+        .rank-badge.second {
+            background: linear-gradient(135deg, #C0C0C0, #A9A9A9);
+            color: var(--aws-dark);
+        }
+
+        .rank-badge.third {
+            background: linear-gradient(135deg, #CD7F32, #B8860B);
+            color: white;
+        }
+
+        .score-cell {
+            font-family: 'Audiowide', cursive;
+            font-size: 1.2rem;
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* LOADING */
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: var(--electric-blue);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .timer-setup {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .input-group input {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .players-table {
+                font-size: 0.85rem;
+            }
+
+            .players-table th,
+            .players-table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <header>
+            <h1>🎯 PANEL DE ADMINISTRACIÓN</h1>
+            <p class="subtitle">Control en Tiempo Real</p>
+        </header>
+
+        <!-- TIMER CONTROLS -->
+        <div class="timer-controls">
+            <h2>⏱️ Control del Timer Global</h2>
+            <div class="timer-setup">
+                <div class="input-group">
+                    <label for="timer-duration">Duración (minutos):</label>
+                    <input type="number" id="timer-duration" min="1" max="180" value="30" />
+                </div>
+                <button class="btn btn-primary" id="start-timer-btn">▶️ Iniciar Timer</button>
+                <button class="btn btn-danger" id="stop-timer-btn">⏹️ Detener Timer</button>
+            </div>
+            <div class="timer-status" id="timer-status">
+                ⏸️ Timer detenido. Configura la duración e inicia cuando estés listo.
+            </div>
+        </div>
+
+        <!-- STATISTICS -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="stat-total-players">0</div>
+                <div class="stat-label">Jugadores Totales</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-online-players">0</div>
+                <div class="stat-label">Jugadores Online</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-avg-score">0%</div>
+                <div class="stat-label">Score Promedio</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-total-attempts">0</div>
+                <div class="stat-label">Intentos Totales</div>
+            </div>
+        </div>
+
+        <!-- PLAYERS TABLE -->
+        <div class="players-section">
+            <h2>👥 Jugadores en Tiempo Real</h2>
+            <div id="loading" class="loading">
+                Conectando con Firebase...
+            </div>
+            <table class="players-table" id="players-table" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Estado</th>
+                        <th>Nickname</th>
+                        <th>Score</th>
+                        <th>Correctas</th>
+                        <th>Intentos</th>
+                        <th>Completadas</th>
+                        <th>Última Actividad</th>
+                    </tr>
+                </thead>
+                <tbody id="players-tbody">
+                    <!-- Rows will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- FIREBASE SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <!-- CONFIGURATION -->
+    <script src="config-firebase.js"></script>
+
+    <!-- ADMIN LOGIC -->
+    <script>
+        let timerInterval = null;
+
+        // Listen to all players in real-time
+        DB_REFS.players.on('value', (snapshot) => {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('players-table').style.display = 'table';
+
+            const players = [];
+            snapshot.forEach((child) => {
+                players.push(child.val());
+            });
+
+            // Sort by score
+            players.sort((a, b) => {
+                if (b.score !== a.score) return b.score - a.score;
+                return b.correctCount - a.correctCount;
+            });
+
+            // Update stats
+            updateStats(players);
+
+            // Update table
+            const tbody = document.getElementById('players-tbody');
+            tbody.innerHTML = '';
+
+            players.forEach((player, index) => {
+                const row = document.createElement('tr');
+                const rank = index + 1;
+                
+                let rankBadge = `<span class="rank-badge">#${rank}</span>`;
+                if (rank === 1) rankBadge = `<span class="rank-badge first">🥇 #1</span>`;
+                else if (rank === 2) rankBadge = `<span class="rank-badge second">🥈 #2</span>`;
+                else if (rank === 3) rankBadge = `<span class="rank-badge third">🥉 #3</span>`;
+
+                const onlineClass = player.isOnline ? 'online' : 'offline';
+                const lastPlayed = player.lastPlayed ? new Date(player.lastPlayed).toLocaleString('es-CO', {
+                    dateStyle: 'short',
+                    timeStyle: 'short'
+                }) : 'Nunca';
+
+                row.innerHTML = `
+                    <td>${rankBadge}</td>
+                    <td><span class="online-indicator ${onlineClass}"></span></td>
+                    <td>${player.nickname}</td>
+                    <td class="score-cell">${player.score}%</td>
+                    <td>${player.correctCount}</td>
+                    <td>${player.attemptCount}</td>
+                    <td>${player.completedArchitectures ? player.completedArchitectures.length : 0}/5</td>
+                    <td style="font-size: 0.85rem;">${lastPlayed}</td>
+                `;
+
+                tbody.appendChild(row);
+            });
+        });
+
+        function updateStats(players) {
+            const totalPlayers = players.length;
+            const onlinePlayers = players.filter(p => p.isOnline).length;
+            const avgScore = totalPlayers > 0
+                ? Math.round(players.reduce((sum, p) => sum + (p.score || 0), 0) / totalPlayers)
+                : 0;
+            const totalAttempts = players.reduce((sum, p) => sum + (p.attemptCount || 0), 0);
+
+            document.getElementById('stat-total-players').textContent = totalPlayers;
+            document.getElementById('stat-online-players').textContent = onlinePlayers;
+            document.getElementById('stat-avg-score').textContent = avgScore + '%';
+            document.getElementById('stat-total-attempts').textContent = totalAttempts;
+        }
+
+        // Timer Controls
+        document.getElementById('start-timer-btn').addEventListener('click', startTimer);
+        document.getElementById('stop-timer-btn').addEventListener('click', stopTimer);
+
+        function startTimer() {
+            const duration = parseInt(document.getElementById('timer-duration').value);
+            
+            if (duration < 1) {
+                alert('La duración debe ser al menos 1 minuto');
+                return;
+            }
+
+            const timerData = {
+                duration: duration,
+                startTime: Date.now(),
+                isActive: true
+            };
+
+            DB_REFS.timer.set(timerData);
+            
+            document.getElementById('timer-status').className = 'timer-status active';
+            document.getElementById('timer-status').textContent = 
+                `⏱️ Timer activo: ${duration} minutos iniciados`;
+            
+            // Update local display
+            updateTimerDisplay(timerData);
+        }
+
+        function stopTimer() {
+            DB_REFS.timer.set({
+                duration: 0,
+                startTime: null,
+                isActive: false
+            });
+
+            document.getElementById('timer-status').className = 'timer-status';
+            document.getElementById('timer-status').textContent = 
+                '⏸️ Timer detenido';
+            
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function updateTimerDisplay(timerData) {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+
+            timerInterval = setInterval(() => {
+                const now = Date.now();
+                const elapsed = Math.floor((now - timerData.startTime) / 1000);
+                const remaining = Math.max(0, (timerData.duration * 60) - elapsed);
+
+                const minutes = Math.floor(remaining / 60);
+                const seconds = remaining % 60;
+
+                document.getElementById('timer-status').className = 'timer-status active';
+                document.getElementById('timer-status').textContent = 
+                    `⏱️ Tiempo restante: ${minutes}:${String(seconds).padStart(2, '0')}`;
+
+                if (remaining <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('timer-status').className = 'timer-status';
+                    document.getElementById('timer-status').textContent = 
+                        '⏰ ¡Tiempo agotado!';
+                }
+            }, 1000);
+        }
+
+        // Listen to timer changes
+        DB_REFS.timer.on('value', (snapshot) => {
+            const timerData = snapshot.val();
+            if (timerData && timerData.isActive) {
+                updateTimerDisplay(timerData);
+            }
+        });
+    </script>
+</body>
+</html>
