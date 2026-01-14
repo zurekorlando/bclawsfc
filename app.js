@@ -136,10 +136,10 @@ function renderComponents() {
         div.draggable = true;
         div.dataset.component = component.name;
         
-        // Detectar si es imagen o emoji
-        const isImage = component.icon.includes('.png') || component.icon.includes('.jpg');
+        // Detectar si es imagen PNG o emoji
+        const isImage = component.icon.includes('.png') || component.icon.includes('.jpg') || component.icon.includes('.svg');
         const iconHtml = isImage 
-            ? `<img src="${component.icon}" alt="${component.name}" onerror="this.style.display='none'">` 
+            ? `<img src="${component.icon}" alt="${component.name}" onerror="this.style.display='none'" draggable="false">` 
             : component.icon;
         
         div.innerHTML = `
@@ -198,8 +198,16 @@ function loadArchitecture(index) {
 let draggedComponent = null;
 
 function handleDragStart(e) {
-    draggedComponent = e.target.dataset.component;
-    e.target.style.opacity = '0.5';
+    // Buscar el elemento .component más cercano (en caso de que el target sea la imagen)
+    const componentElement = e.target.closest('.component');
+    
+    if (!componentElement) {
+        console.error('No se encontró el elemento component');
+        return;
+    }
+    
+    draggedComponent = componentElement.dataset.component;
+    componentElement.style.opacity = '0.5';
     isDragging = true;
     startAutoScroll();
 }
@@ -252,18 +260,18 @@ function handleDrop(e) {
         }
 
         const componentDiv = document.createElement('div');
-componentDiv.className = 'component';
-
-// Detectar si es imagen o emoji
-const isImage = component.icon.includes('.png') || component.icon.includes('.jpg');
-const iconHtml = isImage 
-    ? `<img src="${component.icon}" alt="${component.name}" onerror="this.style.display='none'">` 
-    : component.icon;
-
-componentDiv.innerHTML = `
-    <span class="component-icon">${iconHtml}</span>
-    <div>${component.name}</div>
-`;
+        componentDiv.className = 'component';
+        
+        // Detectar si es imagen PNG o emoji
+        const isImage = component.icon.includes('.png') || component.icon.includes('.jpg') || component.icon.includes('.svg');
+        const iconHtml = isImage 
+            ? `<img src="${component.icon}" alt="${component.name}" onerror="this.style.display='none'" draggable="false">` 
+            : component.icon;
+        
+        componentDiv.innerHTML = `
+            <span class="component-icon">${iconHtml}</span>
+            <div>${component.name}</div>
+        `;
         
         componentDiv.addEventListener('click', function(e) {
             e.stopPropagation();
