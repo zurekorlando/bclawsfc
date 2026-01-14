@@ -135,8 +135,15 @@ function renderComponents() {
         div.className = 'component';
         div.draggable = true;
         div.dataset.component = component.name;
+        
+        // Detectar si es imagen o emoji
+        const isImage = component.icon.includes('.png') || component.icon.includes('.jpg');
+        const iconHtml = isImage 
+            ? `<img src="${component.icon}" alt="${component.name}" onerror="this.style.display='none'">` 
+            : component.icon;
+        
         div.innerHTML = `
-            <span class="component-icon">${component.icon}</span>
+            <span class="component-icon">${iconHtml}</span>
             <div>${component.name}</div>
         `;
         
@@ -245,11 +252,18 @@ function handleDrop(e) {
         }
 
         const componentDiv = document.createElement('div');
-        componentDiv.className = 'component';
-        componentDiv.innerHTML = `
-            <span class="component-icon">${component.icon}</span>
-            <div>${component.name}</div>
-        `;
+componentDiv.className = 'component';
+
+// Detectar si es imagen o emoji
+const isImage = component.icon.includes('.png') || component.icon.includes('.jpg');
+const iconHtml = isImage 
+    ? `<img src="${component.icon}" alt="${component.name}" onerror="this.style.display='none'">` 
+    : component.icon;
+
+componentDiv.innerHTML = `
+    <span class="component-icon">${iconHtml}</span>
+    <div>${component.name}</div>
+`;
         
         componentDiv.addEventListener('click', function(e) {
             e.stopPropagation();
