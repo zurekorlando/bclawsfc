@@ -18,7 +18,7 @@ const CONFIG = {
             description: "Arquitectura serverless usando API Gateway, Lambda y DynamoDB",
             useCase: {
                 title: "Sistema de Reservas Online",
-                scenario: "Una cadena hotelera necesita un sistema de reservas que escale automáticamente durante temporada alta, sin pagar por servidores ociosos en temporada baja. La solución debe ser de bajo costo operacional y alta disponibilidad.",
+                scenario: "Nury tiene una cadena hotelera y necesita un sistema de reservas que escale automáticamente durante temporada alta, sin pagar por servidores ociosos en temporada baja. La solución debe ser de bajo costo operacional y alta disponibilidad.",
                 benefits: "✓ Pago por uso ✓ Escalabilidad automática ✓ Zero mantenimiento de servidores ✓ Alta disponibilidad"
             },
             slots: [
@@ -35,7 +35,7 @@ const CONFIG = {
             description: "Plataforma de microservicios con containers y balanceo de carga",
             useCase: {
                 title: "Plataforma de E-commerce",
-                scenario: "Una empresa de comercio electrónico necesita separar sus servicios (catálogo, carrito, pagos, inventario) para que equipos independientes puedan desarrollar y desplegar sin afectar a otros. Requiere alta disponibilidad y capacidad de escalar servicios específicos según demanda.",
+                scenario: "Mario tiene una empresa de aguacate Hass y la promociona en una plataforma de comercio electrónico, pero Mario necesita separar sus servicios (catálogo, carrito, pagos, inventario) para que equipos independientes puedan desarrollar y desplegar sin afectar a otros. Requiere alta disponibilidad y capacidad de escalar servicios específicos según demanda.",
                 benefits: "✓ Despliegue independiente ✓ Escalabilidad por servicio ✓ Resiliencia ✓ Tecnologías heterogéneas"
             },
             slots: [
@@ -53,7 +53,7 @@ const CONFIG = {
             description: "Sitio web estático con CDN y almacenamiento en S3",
             useCase: {
                 title: "Portal Corporativo Global",
-                scenario: "Una multinacional necesita publicar su sitio web corporativo (HTML, CSS, JS) con presencia en múltiples regiones, entrega ultra-rápida de contenido, certificado SSL y costos mínimos de hosting. El contenido es principalmente estático con actualizaciones ocasionales.",
+                scenario: "Cristian necesita publicar su sitio web corporativo (HTML, CSS, JS) con presencia en múltiples regiones del Oriente medio, entrega ultra-rápida de contenido, certificado SSL y costos mínimos de hosting. El contenido es principalmente estático con actualizaciones ocasionales.",
                 benefits: "✓ Distribución global ✓ Ultra bajo costo ✓ Alta velocidad ✓ HTTPS incluido"
             },
             slots: [
@@ -70,7 +70,7 @@ const CONFIG = {
             description: "Pipeline de datos con procesamiento serverless y streaming",
             useCase: {
                 title: "Analytics de IoT en Tiempo Real",
-                scenario: "Una empresa de logística tiene 10,000 sensores en camiones enviando datos cada segundo (temperatura, ubicación, combustible). Necesitan procesar este streaming de datos en tiempo real, almacenarlos para análisis histórico y generar reportes ejecutivos.",
+                scenario: "Una empresa de logística tiene 10,000 sensores en camiones cargados con el Café de Origen de Aleja, estos envian datos cada segundo (temperatura, ubicación, combustible). Necesitan procesar este streaming de datos en tiempo real, almacenarlos para análisis histórico y generar reportes ejecutivos.",
                 benefits: "✓ Procesamiento en tiempo real ✓ Almacenamiento escalable ✓ Analytics avanzados ✓ Bajo costo"
             },
             slots: [
@@ -88,7 +88,7 @@ const CONFIG = {
             description: "Aplicación de tres capas clásica con balanceador, compute y base de datos",
             useCase: {
                 title: "Sistema ERP Empresarial",
-                scenario: "Una empresa manufacturera necesita migrar su sistema ERP legacy a la nube. La aplicación requiere alta disponibilidad, balanceo de carga entre múltiples servidores, base de datos relacional con backups automáticos y capacidad de crecer conforme aumenten los usuarios.",
+                scenario: "Una empresa manufacturera necesita migrar su sistema ERP legacy a la nube, y sabe que hay una experta en SAP en el equipo de arquitectura de funciones corporativas. La aplicación requiere alta disponibilidad, balanceo de carga entre múltiples servidores, base de datos relacional con backups automáticos y capacidad de crecer conforme aumenten los usuarios.",
                 benefits: "✓ Alta disponibilidad ✓ Separación de capas ✓ Escalabilidad controlada ✓ Backups automáticos"
             },
             slots: [
