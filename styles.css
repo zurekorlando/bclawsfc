@@ -1361,33 +1361,22 @@ h1 {
     .session-code-value {
         font-size: 1.5rem;
     }
-   /**
- * AWS ARCHITECT - ESTILOS PARA ICONOS PNG
- * ========================================
- * Agrega estos estilos a styles.css o crea un archivo separado
- */
-
-/* ==========================================
-   ICONOS PNG EN COMPONENTES
-   ========================================== */
-
-/* Actualizar el estilo del icono para manejar imágenes */
-.component-icon {
-    font-size: 2rem;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 40px; /* Asegura espacio consistente */
 }
 
-/* Estilo para imágenes PNG dentro del icono */
+/* ==========================================
+   ESTILOS PARA ICONOS PNG
+   ========================================== */
+
+/* Evitar que la imagen interfiera con el drag */
 .component-icon img {
+    pointer-events: none; /* CRÍTICO: evita que la imagen capture eventos de drag */
     width: 40px;
     height: 40px;
     object-fit: contain;
     filter: drop-shadow(0 0 5px rgba(0, 212, 255, 0.3));
     transition: all 0.3s ease;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 /* Hover en componentes con imágenes */
@@ -1401,10 +1390,16 @@ h1 {
     filter: drop-shadow(0 0 15px rgba(255, 153, 0, 0.8));
 }
 
-/* ==========================================
-   ICONOS PNG EN SLOTS (Cuando están llenos)
-   ========================================== */
+/* Asegurar que el componente sea draggable */
+.component[draggable="true"] {
+    cursor: grab;
+}
 
+.component[draggable="true"]:active {
+    cursor: grabbing;
+}
+
+/* Iconos PNG en slots (cuando están llenos) */
 .slot .component .component-icon img {
     width: 35px;
     height: 35px;
@@ -1436,26 +1431,4 @@ h1 {
         width: 25px;
         height: 25px;
     }
-}
-
-/* ==========================================
-   FALLBACK: Si la imagen no carga
-   ========================================== */
-
-.component-icon img:not([src]),
-.component-icon img[src=""] {
-    display: none;
-}
-
-/* Mostrar un placeholder si la imagen falla */
-.component-icon img::after {
-    content: "🖼️";
-    font-size: 2rem;
-    position: absolute;
-    display: none;
-}
-
-.component-icon img[alt]::after {
-    display: block;
-}
 }
