@@ -340,6 +340,7 @@
                 </div>
                 <button class="btn btn-primary" id="start-timer-btn">▶️ Iniciar Timer</button>
                 <button class="btn btn-danger" id="stop-timer-btn">⏹️ Detener Timer</button>
+                <button class="btn btn-danger" id="purge-data-btn" style="margin-left: 20px; background: linear-gradient(135deg, #dc3545, #c82333);">🗑️ Limpiar Todos los Datos</button>
             </div>
             <div class="timer-status" id="timer-status">
                 ⏸️ Timer detenido. Configura la duración e inicia cuando estés listo.
@@ -413,9 +414,18 @@
                 players.push(child.val());
             });
 
-            // Sort by score
+            // Sort by: 1) Architectures completed, 2) Score, 3) Correct count
             players.sort((a, b) => {
+                const aCompleted = a.completedArchitectures ? a.completedArchitectures.length : 0;
+                const bCompleted = b.completedArchitectures ? b.completedArchitectures.length : 0;
+                
+                // First: Most architectures completed wins
+                if (bCompleted !== aCompleted) return bCompleted - aCompleted;
+                
+                // Second: Higher score wins
                 if (b.score !== a.score) return b.score - a.score;
+                
+                // Third: More correct answers wins
                 return b.correctCount - a.correctCount;
             });
 
@@ -473,6 +483,52 @@
         // Timer Controls
         document.getElementById('start-timer-btn').addEventListener('click', startTimer);
         document.getElementById('stop-timer-btn').addEventListener('click', stopTimer);
+        document.getElementById('purge-data-btn').addEventListener('click', purgeAllData);
+
+        function purgeAllData() {
+            const confirmMessage = '⚠️ ADVERTENCIA: Esto eliminará PERMANENTEMENTE todos los datos:\n\n' +
+                                 '• Todos los jugadores\n' +
+                                 '• Todas las estadísticas\n' +
+                                 '• El timer actual\n' +
+                                 '• La sesión\n\n' +
+                                 '¿Estás ABSOLUTAMENTE SEGURO de que quieres continuar?';
+            
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+
+            const doubleConfirm = '🔴 ÚLTIMA CONFIRMACIÓN:\n\n' +
+                                'Esta acción NO se puede deshacer.\n' +
+                                'Escribe "BORRAR TODO" en la siguiente ventana para confirmar.';
+            
+            const userInput = prompt(doubleConfirm);
+            
+            if (userInput !== 'BORRAR TODO') {
+                alert('❌ Cancelado. Los datos NO fueron eliminados.');
+                return;
+            }
+
+            // Delete all data from Firebase
+            const promises = [
+                DB_REFS.players.remove(),
+                DB_REFS.timer.remove(),
+                DB_REFS.session.remove()
+            ];
+
+            Promise.all(promises)
+                .then(() => {
+                    alert('✅ Todos los datos han sido eliminados exitosamente.\n\nPuedes iniciar una nueva sesión ahora.');
+                    
+                    // Reset timer status display
+                    document.getElementById('timer-status').className = 'timer-status';
+                    document.getElementById('timer-status').textContent = 
+                        '⏸️ Timer detenido. Configura la duración e inicia cuando estés listo.';
+                })
+                .catch((error) => {
+                    alert('❌ Error al eliminar datos: ' + error.message);
+                    console.error('Purge error:', error);
+                });
+        }
 
         function startTimer() {
             const duration = parseInt(document.getElementById('timer-duration').value);
