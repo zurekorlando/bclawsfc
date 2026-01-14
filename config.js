@@ -99,24 +99,25 @@ const CONFIG = {
         }
     ],
 
+
     // ==========================================
-    // COMPONENTES AWS DISPONIBLES
+    // COMPONENTES AWS (CON ICONOS PNG)
     // ==========================================
     awsComponents: [
-        { name: "API Gateway", icon: "🔌" },
-        { name: "Lambda", icon: "λ" },
-        { name: "DynamoDB", icon: "🗄️" },
-        { name: "ALB", icon: "⚖️" },
-        { name: "ECS", icon: "🐳" },
-        { name: "RDS", icon: "🗃️" },
-        { name: "ElastiCache", icon: "⚡" },
-        { name: "Route 53", icon: "🌐" },
-        { name: "CloudFront", icon: "☁️" },
-        { name: "S3", icon: "🪣" },
-        { name: "Kinesis", icon: "🌊" },
-        { name: "Redshift", icon: "📊" },
-        { name: "ELB", icon: "🔀" },
-        { name: "EC2", icon: "💻" }
+        { name: "API Gateway", icon: "icons/api-gateway.png" },
+        { name: "Lambda", icon: "icons/lambda.png" },
+        { name: "DynamoDB", icon: "icons/dynamodb.png" },
+        { name: "ALB", icon: "icons/alb.png" },
+        { name: "ECS", icon: "icons/ecs.png" },
+        { name: "RDS", icon: "icons/rds.png" },
+        { name: "ElastiCache", icon: "icons/elasticache.png" },
+        { name: "Route 53", icon: "icons/route53.png" },
+        { name: "CloudFront", icon: "icons/cloudfront.png" },
+        { name: "S3", icon: "icons/s3.png" },
+        { name: "Kinesis", icon: "icons/kinesis.png" },
+        { name: "Redshift", icon: "icons/redshift.png" },
+        { name: "ELB", icon: "icons/elb.png" },
+        { name: "EC2", icon: "icons/ec2.png" }
     ],
 
     // ==========================================
